@@ -59,7 +59,23 @@ jobs:
         env:
           DB_PORT: ${{ job.services.database.ports['5432'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-        run: ./vendor/bin/pest --compact --parallel --shard=${{ matrix.shard }}/2
+        run: ./vendor/bin/pest --compact --parallel --shard=${{ matrix.shard }}/2 --log-junit junit.xml
+      - name: Report failing tests as annotations
+        if: failure()
+        run: |
+          node -e '
+            const x = require("fs").readFileSync("junit.xml", "utf8");
+            const cases = [...x.matchAll(/<testcase\b([^>]*?)(?:\/>|>([\s\S]*?)<\/testcase>)/g)];
+            const attr = (s, n) => (s.match(new RegExp(n + "=\"([^\"]*)\"")) || [])[1] || "";
+            const dec = s => s.replace(/&quot;/g, "\"").replace(/&apos;/g, "\x27").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+            const failed = cases.filter(c => /<(failure|error)\b/.test(c[2] || ""));
+            console.log(`failed: ${failed.length} of ${cases.length}`);
+            for (const c of failed.slice(0, 45)) {
+              const body = dec((c[2].match(/<(?:failure|error)\b[^>]*>([\s\S]*?)<\/(?:failure|error)>/) || [, ""])[1]);
+              const file = attr(c[1], "file").replace(/^.*?\/tests\//, "tests/");
+              const msg = body.split("\n").filter(Boolean).slice(0, 6).join(" | ").replace(/%/g, "%25").replace(/\r?\n/g, " ").slice(0, 600);
+              console.log(`::error file=${file},title=${dec(attr(c[1], "name")).slice(0, 120)}::${msg}`);
+            }'
       - name: Show logged warnings of failed tests
         if: failure()
         run: grep -h "WARNING\|ERROR" storage/logs/*.log | tail -n 50 || true
