@@ -11,6 +11,7 @@ test('lists every provider with whether the user is linked to it', function () {
     expect(ListConnectedAccounts::execute($user))->toBe([
         ['provider' => 'google', 'label' => 'Google', 'connected' => false, 'can_disconnect' => false],
         ['provider' => 'github', 'label' => 'GitHub', 'connected' => true, 'can_disconnect' => true],
+        ['provider' => 'zoho', 'label' => 'Zoho', 'connected' => false, 'can_disconnect' => false],
     ]);
 });
 

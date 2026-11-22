@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => 'تم فصل :provider بنجاح.',
             'flash_connected' => 'تم ربط :provider بنجاح.',
             'flash_already_linked' => 'حساب :provider هذا مرتبط بالفعل بمستخدم آخر.',
+            'flash_email_mismatch' => 'يجب أن يطابق البريد الإلكتروني لحسابك في :provider بريدك في TryPost.',
             'flash_cannot_disconnect' => 'لا يمكنك فصل طريقة تسجيل الدخول الوحيدة لديك. عيّن كلمة مرور أو اربط مزوّدًا آخر أولًا.',
         ],
     ],

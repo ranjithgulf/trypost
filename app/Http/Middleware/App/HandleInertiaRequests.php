@@ -112,6 +112,7 @@ class HandleInertiaRequests extends Middleware
             'aiEnabled' => fn (): bool => filled(config('ai.providers.'.config('ai.default').'.key')),
             'googleAuthEnabled' => fn (): bool => SocialAuthProvider::Google->isEnabled(),
             'githubAuthEnabled' => fn (): bool => SocialAuthProvider::GitHub->isEnabled(),
+            'zohoAuthEnabled' => fn (): bool => SocialAuthProvider::Zoho->isEnabled(),
             'toursEnabled' => fn (): bool => (bool) config('trypost.tours.enabled'),
             ...(filled($user) ? [
                 'mediaSources' => fn (): array => ['menu' => MediaSource::menu()],

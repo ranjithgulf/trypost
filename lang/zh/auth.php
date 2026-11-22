@@ -57,6 +57,12 @@ return [
     'google_signup' => '使用 Google 注册',
     'github_login' => '使用 GitHub 登录',
     'github_signup' => '使用 GitHub 注册',
+    'zoho_login' => '使用 Zoho 登录',
+    'zoho_signup' => '使用 Zoho 注册',
+    'zoho_failed' => 'Zoho 登录失败，请重试。',
+    'zoho_not_allowed' => '你的 Zoho 账号不允许登录 TryPost。',
+    'zoho_link_required' => '已有 TryPost 账号使用此邮箱。请先用密码登录，再在“个人资料 → 登录”中关联 Zoho。',
+    'zoho_no_account' => '此 Zoho 用户没有 TryPost 账号。请向管理员申请邀请。',
     'github_email_unavailable' => '无法从 GitHub 获取你的邮箱。请将你的 GitHub 邮箱设为公开，或授予邮箱权限后重试。',
 
     'login' => [

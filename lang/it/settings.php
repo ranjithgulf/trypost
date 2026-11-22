@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider scollegato con successo.',
             'flash_connected' => ':provider collegato con successo.',
             'flash_already_linked' => 'Quell\'account :provider è già collegato a un altro utente.',
+            'flash_email_mismatch' => 'L\'email del tuo account :provider deve corrispondere alla tua email di TryPost.',
             'flash_cannot_disconnect' => 'Non puoi scollegare il tuo unico metodo di accesso. Imposta prima una password o collega un altro provider.',
         ],
     ],

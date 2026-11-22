@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider succesvol losgekoppeld.',
             'flash_connected' => ':provider succesvol gekoppeld.',
             'flash_already_linked' => 'Dat :provider-account is al aan een andere gebruiker gekoppeld.',
+            'flash_email_mismatch' => 'Het e-mailadres van je :provider-account moet overeenkomen met je TryPost-e-mailadres.',
             'flash_cannot_disconnect' => 'Je kunt je enige inlogmethode niet loskoppelen. Stel eerst een wachtwoord in of koppel een andere provider.',
         ],
     ],

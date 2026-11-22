@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider desconectada correctamente.',
             'flash_connected' => ':provider conectada correctamente.',
             'flash_already_linked' => 'Esa cuenta de :provider ya está vinculada a otro usuario.',
+            'flash_email_mismatch' => 'El correo de tu cuenta de :provider debe coincidir con tu correo de TryPost.',
             'flash_cannot_disconnect' => 'No puedes desconectar tu único método de inicio de sesión. Define una contraseña o conecta otro proveedor primero.',
         ],
     ],

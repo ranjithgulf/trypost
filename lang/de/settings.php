@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider erfolgreich getrennt.',
             'flash_connected' => ':provider erfolgreich verbunden.',
             'flash_already_linked' => 'Dieses :provider-Konto ist bereits mit einem anderen Benutzer verknüpft.',
+            'flash_email_mismatch' => 'Die E-Mail-Adresse deines :provider-Kontos muss mit deiner TryPost-E-Mail übereinstimmen.',
             'flash_cannot_disconnect' => 'Du kannst deine einzige Anmeldemethode nicht trennen. Lege zuerst ein Passwort fest oder verbinde einen anderen Anbieter.',
         ],
     ],

@@ -21,6 +21,9 @@ class ConnectedAccountController extends Controller
         return match ($socialProvider) {
             SocialAuthProvider::Google => Socialite::driver('google-auth')->redirect(),
             SocialAuthProvider::GitHub => Socialite::driver('github')->scopes(['read:user', 'user:email'])->redirect(),
+            // The Zoho callback links only when the verified Zoho email
+            // matches this signed-in user's email (see ZohoController).
+            SocialAuthProvider::Zoho => Socialite::driver('zoho')->redirect(),
         };
     }
 

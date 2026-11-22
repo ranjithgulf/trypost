@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Εγγραφή με Google',
     'github_login' => 'Σύνδεση με GitHub',
     'github_signup' => 'Εγγραφή με GitHub',
+    'zoho_login' => 'Σύνδεση με Zoho',
+    'zoho_signup' => 'Εγγραφή με Zoho',
+    'zoho_failed' => 'Η σύνδεση με Zoho απέτυχε. Δοκιμάστε ξανά.',
+    'zoho_not_allowed' => 'Ο λογαριασμός σας Zoho δεν επιτρέπεται να συνδεθεί στο TryPost.',
+    'zoho_link_required' => 'Ένας λογαριασμός TryPost χρησιμοποιεί ήδη αυτό το email. Συνδεθείτε με τον κωδικό σας και μετά συνδέστε το Zoho από Προφίλ → Σύνδεση.',
+    'zoho_no_account' => 'Δεν υπάρχει λογαριασμός TryPost για αυτόν τον χρήστη Zoho. Ζητήστε πρόσκληση από έναν διαχειριστή.',
     'github_email_unavailable' => 'Δεν ήταν δυνατή η ανάκτηση του email σας από το GitHub. Κάντε δημόσιο το email σας στο GitHub ή παραχωρήστε το scope email και δοκιμάστε ξανά.',
 
     'login' => [

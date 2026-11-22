@@ -43,6 +43,7 @@ use App\Services\PostHogService;
 use App\Socialite\DiscordProvider;
 use App\Socialite\InstagramProvider;
 use App\Socialite\LinkedInPageExtendSocialite;
+use App\Socialite\Zoho\ZohoDirectoryProvider;
 use App\Support\Auth\PasswordRequirements;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -287,6 +288,11 @@ class AppServiceProvider extends ServiceProvider
             $config = $app['config']['services.google-auth'];
 
             return Socialite::buildProvider(GoogleProvider::class, $config);
+        });
+
+        // Zoho Directory SSO (OIDC) — login/signup only; see ZohoController.
+        Socialite::extend('zoho', function ($app) {
+            return Socialite::buildProvider(ZohoDirectoryProvider::class, $app['config']['services.zoho']);
         });
 
         // Google Business Profile — dedicated app, separate from 'google' (YouTube).

@@ -2,6 +2,7 @@
 import { Form, usePage } from '@inertiajs/vue3';
 import Github from '@thesvg/vue/github';
 import Google from '@thesvg/vue/google';
+import Zoho from '@thesvg/vue/zoho';
 import { ref } from 'vue';
 
 import ConnectedAccountController from '@/actions/App/Http/Controllers/App/Settings/ConnectedAccountController';
@@ -38,12 +39,14 @@ const clearNewPassword = (): void => {
 };
 
 const page = usePage();
+const providerEnabledProp: Record<SocialProvider, string> = {
+    google: 'googleAuthEnabled',
+    github: 'githubAuthEnabled',
+    zoho: 'zohoAuthEnabled',
+};
+
 const providerEnabled = (provider: SocialProvider): boolean =>
-    Boolean(
-        page.props[
-            provider === 'google' ? 'googleAuthEnabled' : 'githubAuthEnabled'
-        ],
-    );
+    Boolean(page.props[providerEnabledProp[provider]]);
 </script>
 
 <template>
@@ -156,6 +159,12 @@ const providerEnabled = (provider: SocialProvider): boolean =>
                             aria-hidden="true"
                             class="size-7 shrink-0"
                             data-testid="connected-account-icon-google"
+                        />
+                        <Zoho
+                            v-else-if="account.provider === 'zoho'"
+                            aria-hidden="true"
+                            class="size-7 shrink-0"
+                            data-testid="connected-account-icon-zoho"
                         />
                         <Github
                             v-else

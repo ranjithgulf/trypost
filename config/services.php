@@ -82,6 +82,17 @@ return [
         'redirect' => env('GITHUB_AUTH_CALLBACK'),
     ],
 
+    // Zoho Directory SSO (OIDC). Issuer and SSO URL come from
+    // {ZOHO_SSO_URL}/.well-known/openid-configuration of the Zoho Directory app.
+    'zoho' => [
+        'client_id' => env('ZOHO_CLIENT_ID'),
+        'client_secret' => env('ZOHO_CLIENT_SECRET'),
+        'redirect' => env('ZOHO_AUTH_CALLBACK', rtrim((string) env('APP_URL', ''), '/').'/auth/zoho/callback'),
+        'issuer' => env('ZOHO_ISSUER'),
+        'sso_url' => env('ZOHO_SSO_URL'),
+        'allowed_domains' => env('ZOHO_ALLOWED_DOMAINS', ''),
+    ],
+
     // Facebook Pages
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),

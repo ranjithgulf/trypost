@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Aanmelden met Google',
     'github_login' => 'Inloggen met GitHub',
     'github_signup' => 'Aanmelden met GitHub',
+    'zoho_login' => 'Inloggen met Zoho',
+    'zoho_signup' => 'Registreren met Zoho',
+    'zoho_failed' => 'Inloggen met Zoho is mislukt. Probeer het opnieuw.',
+    'zoho_not_allowed' => 'Je Zoho-account mag niet inloggen bij TryPost.',
+    'zoho_link_required' => 'Dit e-mailadres wordt al gebruikt door een TryPost-account. Log in met je wachtwoord en koppel Zoho daarna via Profiel → Inloggen.',
+    'zoho_no_account' => 'Er is geen TryPost-account voor deze Zoho-gebruiker. Vraag een beheerder om een uitnodiging.',
     'github_email_unavailable' => 'Kan je e-mailadres niet ophalen van GitHub. Maak je GitHub-e-mailadres openbaar of verleen de e-mailscope en probeer het opnieuw.',
 
     'login' => [

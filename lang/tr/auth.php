@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Google ile kayıt ol',
     'github_login' => 'GitHub ile giriş yap',
     'github_signup' => 'GitHub ile kayıt ol',
+    'zoho_login' => 'Zoho ile giriş yap',
+    'zoho_signup' => 'Zoho ile kaydol',
+    'zoho_failed' => 'Zoho ile giriş başarısız oldu. Lütfen tekrar deneyin.',
+    'zoho_not_allowed' => 'Zoho hesabınızın TryPost\'a giriş yapmasına izin verilmiyor.',
+    'zoho_link_required' => 'Bu e-posta zaten bir TryPost hesabı tarafından kullanılıyor. Şifrenizle giriş yapın, ardından Profil → Giriş bölümünden Zoho\'yu bağlayın.',
+    'zoho_no_account' => 'Bu Zoho kullanıcısı için bir TryPost hesabı yok. Bir yöneticiden davet isteyin.',
     'github_email_unavailable' => 'GitHub\'dan e-postanız alınamadı. GitHub e-postanızı herkese açık yapın veya e-posta iznini verin, ardından tekrar deneyin.',
 
     'login' => [

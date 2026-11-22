@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Google で登録',
     'github_login' => 'GitHub でログイン',
     'github_signup' => 'GitHub で登録',
+    'zoho_login' => 'Zohoでログイン',
+    'zoho_signup' => 'Zohoで登録',
+    'zoho_failed' => 'Zohoでのログインに失敗しました。もう一度お試しください。',
+    'zoho_not_allowed' => 'このZohoアカウントはTryPostへのログインを許可されていません。',
+    'zoho_link_required' => 'このメールアドレスはすでにTryPostアカウントで使用されています。パスワードでログインしてから、プロフィール → ログインでZohoを連携してください。',
+    'zoho_no_account' => 'このZohoユーザーのTryPostアカウントはありません。管理者に招待を依頼してください。',
     'github_email_unavailable' => 'GitHub からメールアドレスを取得できませんでした。GitHub のメールアドレスを公開するか、email スコープを許可してから、もう一度お試しください。',
 
     'login' => [

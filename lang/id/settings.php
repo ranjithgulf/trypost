@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => 'Koneksi :provider berhasil diputus.',
             'flash_connected' => ':provider berhasil terhubung.',
             'flash_already_linked' => 'Akun :provider itu sudah tertaut ke pengguna lain.',
+            'flash_email_mismatch' => 'Email akun :provider Anda harus sama dengan email TryPost Anda.',
             'flash_cannot_disconnect' => 'Kamu tidak bisa memutus satu-satunya metode masuk kamu. Atur kata sandi atau hubungkan akun lain dulu.',
         ],
     ],

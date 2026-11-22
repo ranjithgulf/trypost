@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Registrati con Google',
     'github_login' => 'Accedi con GitHub',
     'github_signup' => 'Registrati con GitHub',
+    'zoho_login' => 'Accedi con Zoho',
+    'zoho_signup' => 'Registrati con Zoho',
+    'zoho_failed' => 'Accesso con Zoho non riuscito. Riprova.',
+    'zoho_not_allowed' => 'Il tuo account Zoho non è autorizzato ad accedere a TryPost.',
+    'zoho_link_required' => 'Questa email è già usata da un account TryPost. Accedi con la password, poi collega Zoho in Profilo → Accesso.',
+    'zoho_no_account' => 'Non esiste alcun account TryPost per questo utente Zoho. Chiedi un invito a un amministratore.',
     'github_email_unavailable' => 'Impossibile recuperare la tua email da GitHub. Rendi pubblica la tua email GitHub o concedi l\'ambito email, poi riprova.',
 
     'login' => [

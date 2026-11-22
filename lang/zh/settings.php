@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider 已成功断开连接。',
             'flash_connected' => ':provider 已成功连接。',
             'flash_already_linked' => '该 :provider 账号已关联到另一个用户。',
+            'flash_email_mismatch' => '你的 :provider 账号邮箱必须与 TryPost 邮箱一致。',
             'flash_cannot_disconnect' => '你无法断开唯一的登录方式。请先设置密码或连接另一个第三方。',
         ],
     ],

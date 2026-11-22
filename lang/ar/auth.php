@@ -57,6 +57,12 @@ return [
     'google_signup' => 'التسجيل عبر Google',
     'github_login' => 'تسجيل الدخول عبر GitHub',
     'github_signup' => 'التسجيل عبر GitHub',
+    'zoho_login' => 'تسجيل الدخول عبر Zoho',
+    'zoho_signup' => 'إنشاء حساب عبر Zoho',
+    'zoho_failed' => 'فشل تسجيل الدخول عبر Zoho. يرجى المحاولة مرة أخرى.',
+    'zoho_not_allowed' => 'حسابك في Zoho غير مسموح له بتسجيل الدخول إلى TryPost.',
+    'zoho_link_required' => 'يوجد حساب TryPost يستخدم هذا البريد الإلكتروني بالفعل. سجّل الدخول بكلمة المرور، ثم اربط Zoho من الملف الشخصي ← تسجيل الدخول.',
+    'zoho_no_account' => 'لا يوجد حساب TryPost لمستخدم Zoho هذا. اطلب دعوة من أحد المسؤولين.',
     'github_email_unavailable' => 'تعذر جلب بريدك الإلكتروني من GitHub. اجعل بريدك على GitHub عامًا أو امنح نطاق الوصول إلى البريد، ثم حاول مرة أخرى.',
 
     'login' => [

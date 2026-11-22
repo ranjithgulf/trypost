@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Google로 가입하기',
     'github_login' => 'GitHub으로 로그인',
     'github_signup' => 'GitHub으로 가입하기',
+    'zoho_login' => 'Zoho로 로그인',
+    'zoho_signup' => 'Zoho로 가입',
+    'zoho_failed' => 'Zoho 로그인에 실패했습니다. 다시 시도해 주세요.',
+    'zoho_not_allowed' => '이 Zoho 계정은 TryPost 로그인이 허용되지 않습니다.',
+    'zoho_link_required' => '이 이메일은 이미 TryPost 계정에서 사용 중입니다. 비밀번호로 로그인한 뒤 프로필 → 로그인에서 Zoho를 연결하세요.',
+    'zoho_no_account' => '이 Zoho 사용자의 TryPost 계정이 없습니다. 관리자에게 초대를 요청하세요.',
     'github_email_unavailable' => 'GitHub에서 이메일을 가져올 수 없습니다. GitHub 이메일을 공개로 설정하거나 이메일 권한을 부여한 후 다시 시도하세요.',
 
     'login' => [

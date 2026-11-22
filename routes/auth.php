@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\ZohoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/invites/{invite}', [AcceptInviteController::class, 'show'])->name('app.invites.show');
@@ -33,6 +34,7 @@ Route::middleware(['guest'])->group(function () {
 
     Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name('auth.google.redirect');
     Route::get('/auth/github/redirect', [GitHubController::class, 'redirect'])->name('auth.github.redirect');
+    Route::get('/auth/zoho/redirect', [ZohoController::class, 'redirect'])->name('auth.zoho.redirect');
 });
 
 // Callbacks must be reachable by both guests (signup/login) and authenticated
@@ -41,6 +43,8 @@ Route::middleware(['guest'])->group(function () {
 // on `Auth::check()` to dispatch to the matching flow.
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
 Route::get('/auth/github/callback', [GitHubController::class, 'callback'])->name('auth.github.callback');
+// Must match the redirect URI registered in Zoho Directory exactly.
+Route::get('/auth/zoho/callback', [ZohoController::class, 'callback'])->name('auth.zoho.callback');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/verify-email', EmailVerificationPromptController::class)->name('verification.notice');

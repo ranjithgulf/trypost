@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => 'Ο πάροχος :provider αποσυνδέθηκε με επιτυχία.',
             'flash_connected' => 'Ο πάροχος :provider συνδέθηκε με επιτυχία.',
             'flash_already_linked' => 'Αυτός ο λογαριασμός :provider είναι ήδη συνδεδεμένος με άλλον χρήστη.',
+            'flash_email_mismatch' => 'Το email του λογαριασμού σας :provider πρέπει να ταιριάζει με το email σας στο TryPost.',
             'flash_cannot_disconnect' => 'Δεν μπορείτε να αποσυνδέσετε τη μοναδική σας μέθοδο σύνδεσης. Ορίστε πρώτα έναν κωδικό πρόσβασης ή συνδέστε άλλον πάροχο.',
         ],
     ],

@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider 연결이 해제되었습니다.',
             'flash_connected' => ':provider이(가) 연결되었습니다.',
             'flash_already_linked' => '해당 :provider 계정은 이미 다른 사용자에게 연결되어 있습니다.',
+            'flash_email_mismatch' => ':provider 계정 이메일이 TryPost 이메일과 같아야 합니다.',
             'flash_cannot_disconnect' => '유일한 로그인 방법은 연결을 해제할 수 없습니다. 먼저 비밀번호를 설정하거나 다른 제공업체를 연결하세요.',
         ],
     ],

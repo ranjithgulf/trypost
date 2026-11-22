@@ -57,6 +57,12 @@ return [
     'google_signup' => 'Daftar dengan Google',
     'github_login' => 'Masuk dengan GitHub',
     'github_signup' => 'Daftar dengan GitHub',
+    'zoho_login' => 'Masuk dengan Zoho',
+    'zoho_signup' => 'Daftar dengan Zoho',
+    'zoho_failed' => 'Gagal masuk dengan Zoho. Silakan coba lagi.',
+    'zoho_not_allowed' => 'Akun Zoho Anda tidak diizinkan masuk ke TryPost.',
+    'zoho_link_required' => 'Email ini sudah digunakan oleh akun TryPost. Masuk dengan kata sandi Anda, lalu hubungkan Zoho di Profil → Masuk.',
+    'zoho_no_account' => 'Tidak ada akun TryPost untuk pengguna Zoho ini. Minta undangan kepada administrator.',
     'github_email_unavailable' => 'Kami tidak bisa mengambil emailmu dari GitHub. Jadikan email GitHub-mu publik atau berikan izin akses email, lalu coba lagi.',
 
     'login' => [

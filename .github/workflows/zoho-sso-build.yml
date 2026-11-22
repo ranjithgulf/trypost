@@ -1,0 +1,190 @@
+name: Zoho SSO build (runtime delta)
+
+# Builds the Zoho Directory SSO branch and packages ONLY the files that differ
+# from the exact image running in production (ghcr.io/trypostit/trypost v2.1.0,
+# revision b569076). The small server applies that delta as a thin layer, so
+# no PHP/Node build runs there and the multi-GB base layers are reused.
+
+on:
+  push:
+    branches: [feature/zoho-directory-sso]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_REVISION: b569076fc8cfa703666fee372254019ecf111a2d
+  BASE_IMAGE: ghcr.io/trypostit/trypost@sha256:de002279037d8c86eec16f2caad9ed8bb02ac259a25b0abfc43f3d18738777e6
+  DB_CONNECTION: pgsql
+  DB_DATABASE: trypost_test
+  DB_USERNAME: postgres
+  DB_PASSWORD: password
+  BROADCAST_CONNECTION: "null"
+  CACHE_STORE: array
+  QUEUE_CONNECTION: sync
+  SESSION_DRIVER: array
+
+jobs:
+  tests:
+    name: Tests (PostgreSQL ${{ matrix.shard }}/2)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    services:
+      database:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: trypost_test
+        ports: ['5432/tcp']
+        options: >-
+          --health-cmd="pg_isready" --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7
+        ports: ['6379/tcp']
+        options: >-
+          --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-laravel
+        with:
+          db-port: ${{ job.services.database.ports['5432'] }}
+          redis-port: ${{ job.services.redis.ports['6379'] }}
+      - name: Run backend tests
+        env:
+          DB_PORT: ${{ job.services.database.ports['5432'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+        run: ./vendor/bin/pest --compact --parallel --shard=${{ matrix.shard }}/2
+      - name: Show logged warnings of failed tests
+        if: failure()
+        run: grep -h "WARNING\|ERROR" storage/logs/*.log | tail -n 50 || true
+
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+      - name: Install dependencies
+        run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm ci --no-audit --no-fund
+      - name: Changed files since the deployed revision
+        run: |
+          git diff --name-only --diff-filter=AM "$BASE_REVISION" HEAD | tee changed.txt
+      - name: PHP syntax
+        run: grep -E '\.php$' changed.txt | xargs -r -n1 php -l
+      - name: Pint (no new style issues vs deployed revision)
+        run: |
+          fail=0
+          for f in $(grep -E '\.php$' changed.txt); do
+            if ./vendor/bin/pint --test -q "$f"; then continue; fi
+            mkdir -p "/tmp/base/$(dirname "$f")"
+            if git show "$BASE_REVISION:$f" > "/tmp/base/$f" 2>/dev/null \
+               && ! ./vendor/bin/pint --test -q --config pint.json "/tmp/base/$f"; then
+              echo "pre-existing style issue (unchanged by this branch): $f"
+            else
+              echo "::error file=$f::new Pint style issue"; ./vendor/bin/pint --test -v "$f" || true; fail=1
+            fi
+          done
+          exit $fail
+      # Upstream's own lint workflow auto-fixes (prettier --write, eslint --fix),
+      # so untouched upstream lines are not guaranteed clean. Gate on "no new
+      # problems" per changed file instead of absolute cleanliness.
+      - name: ESLint (no new errors vs deployed revision)
+        run: |
+          cp .env.ci .env && php artisan key:generate -q
+          php artisan wayfinder:generate --with-form >/dev/null
+          count() { node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const r=JSON.parse(s||"[]");console.log(r.reduce((n,f)=>n+f.errorCount,0))})'; }
+          fail=0
+          for f in $(grep -E '^resources/.*\.(vue|ts)$' changed.txt); do
+            head_n=$(npx eslint -f json "$f" | count || true)
+            base_n=$( (git show "$BASE_REVISION:$f" 2>/dev/null || printf '') | npx eslint -f json --stdin --stdin-filename "$f" | count || true)
+            echo "$f: base=$base_n head=$head_n"
+            [ "${head_n:-0}" -gt "${base_n:-0}" ] && fail=1
+          done
+          exit $fail
+      - name: Prettier (informational)
+        continue-on-error: true
+        run: grep -E '^resources/.*\.(vue|ts)$' changed.txt | xargs -r npx prettier --check
+
+  delta:
+    needs: [tests, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build production image (same build args as upstream release)
+        run: |
+          docker build -f docker/Dockerfile --target production \
+            --build-arg VITE_REVERB_APP_KEY=trypost-reverb-key \
+            --label org.opencontainers.image.revision="$GITHUB_SHA" \
+            -t trypost-zoho:ci .
+
+      - name: Pull the exact deployed image
+        run: docker pull "$BASE_IMAGE"
+
+      - name: Compare trees and verify vendor compatibility
+        run: |
+          set -euo pipefail
+          for img in base new; do
+            ref=$([ $img = base ] && echo "$BASE_IMAGE" || echo trypost-zoho:ci)
+            cid=$(docker create "$ref"); mkdir -p "tree/$img"
+            docker cp "$cid:/var/www/html" "tree/$img/" ; docker rm "$cid" >/dev/null
+            ( cd "tree/$img/html" && find . -type f ! -path './storage/*' ! -path './bootstrap/cache/*' \
+                ! -path './node_modules/*' -print0 | LC_ALL=C sort -z | xargs -0 sha256sum ) > "$img.sha"
+          done
+          # vendor/ must be identical except Composer's regenerated autoloader.
+          grep ' ./vendor/' base.sha | grep -v ' ./vendor/composer/' > vb.txt
+          grep ' ./vendor/' new.sha  | grep -v ' ./vendor/composer/' > vn.txt
+          if ! diff -q vb.txt vn.txt; then echo "::error::vendor/ differs from the deployed image"; diff vb.txt vn.txt | head -40; exit 1; fi
+          cmp tree/base/html/vendor/composer/installed.json tree/new/html/vendor/composer/installed.json \
+            || { echo "::error::installed package set differs"; exit 1; }
+          echo "vendor packages identical to deployed image"
+          # Changed/added files (excluding the bind-mounted Horizon config).
+          comm -13 <(sort base.sha) <(sort new.sha) | awk '{print substr($0, index($0,$2))}' | sed 's#^\./##' \
+            | grep -v '^config/horizon.php$' | LC_ALL=C sort -u > changed-files.txt
+          comm -23 <(awk '{print $2}' base.sha | sort) <(awk '{print $2}' new.sha | sort) | sed 's#^\./##' > deleted-files.txt
+          echo "changed/added: $(wc -l < changed-files.txt)  deleted: $(wc -l < deleted-files.txt)"
+          sed -E 's#^((public/build|resources/js/(actions|routes|wayfinder)|bootstrap/ssr)/).*#\1…#' changed-files.txt | sort | uniq -c
+
+      - name: Package delta
+        run: |
+          set -euo pipefail
+          mkdir -p delta/html
+          ( cd tree/new/html && tar -cf - -T ../../../changed-files.txt ) | tar -xf - -C delta/html
+          cp deleted-files.txt delta/DELETED
+          base_owner=$(docker run --rm --entrypoint stat "$BASE_IMAGE" -c '%u:%g' /var/www/html/app)
+          {
+            echo "commit=$GITHUB_SHA"
+            echo "base_revision=$BASE_REVISION"
+            echo "base_image=$BASE_IMAGE"
+            echo "app_owner=$base_owner"
+            echo "changed_files=$(wc -l < changed-files.txt)"
+            echo "deleted_files=$(wc -l < deleted-files.txt)"
+            echo "vendor_installed_json_sha256=$(sha256sum tree/new/html/vendor/composer/installed.json | cut -d' ' -f1)"
+          } > delta/MANIFEST
+          ( cd delta/html && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum ) > delta/FILES.sha256
+          tar -C delta -czf trypost-zoho-sso-delta.tar.gz MANIFEST DELETED FILES.sha256 html
+          sha256sum trypost-zoho-sso-delta.tar.gz > trypost-zoho-sso-delta.tar.gz.sha256
+          cat delta/MANIFEST; ls -lh trypost-zoho-sso-delta.tar.gz
+          { echo '### Runtime delta'; echo '```'; cat delta/MANIFEST; cat trypost-zoho-sso-delta.tar.gz.sha256; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trypost-zoho-sso-delta
+          path: |
+            trypost-zoho-sso-delta.tar.gz
+            trypost-zoho-sso-delta.tar.gz.sha256
+          retention-days: 7
+          if-no-files-found: error

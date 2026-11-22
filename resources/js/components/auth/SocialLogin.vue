@@ -2,6 +2,7 @@
 import { usePage } from '@inertiajs/vue3';
 import Github from '@thesvg/vue/github';
 import Google from '@thesvg/vue/google';
+import Zoho from '@thesvg/vue/zoho';
 import { computed } from 'vue';
 
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { useGuestLocale } from '@/composables/useGuestLocale';
 import { detectPreferences } from '@/lib/detectPreferences';
 import { redirect as githubRedirect } from '@/routes/auth/github';
 import { redirect as googleRedirect } from '@/routes/auth/google';
+import { redirect as zohoRedirect } from '@/routes/auth/zoho';
 
 const props = withDefaults(
     defineProps<{
@@ -22,7 +24,10 @@ const props = withDefaults(
 const page = usePage();
 const googleEnabled = computed(() => Boolean(page.props.googleAuthEnabled));
 const githubEnabled = computed(() => Boolean(page.props.githubAuthEnabled));
-const hasSocial = computed(() => googleEnabled.value || githubEnabled.value);
+const zohoEnabled = computed(() => Boolean(page.props.zohoAuthEnabled));
+const hasSocial = computed(
+    () => googleEnabled.value || githubEnabled.value || zohoEnabled.value,
+);
 
 const detected = detectPreferences();
 const { signupLocale } = useGuestLocale();
@@ -40,6 +45,7 @@ const query = computed(() => {
 
 const googleUrl = computed(() => googleRedirect.url({ query: query.value }));
 const githubUrl = computed(() => githubRedirect.url({ query: query.value }));
+const zohoUrl = computed(() => zohoRedirect.url({ query: query.value }));
 </script>
 
 <template>
@@ -77,6 +83,22 @@ const githubUrl = computed(() => githubRedirect.url({ query: query.value }));
                     mode === 'login'
                         ? $t('auth.github_login')
                         : $t('auth.github_signup')
+                }}
+            </Button>
+
+            <Button
+                v-if="zohoEnabled"
+                data-testid="social-login-zoho"
+                variant="outline"
+                class="w-full bg-card"
+                as="a"
+                :href="zohoUrl"
+            >
+                <Zoho aria-hidden="true" class="size-4" />
+                {{
+                    mode === 'login'
+                        ? $t('auth.zoho_login')
+                        : $t('auth.zoho_signup')
                 }}
             </Button>
         </div>

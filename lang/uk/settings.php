@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider успішно від’єднано.',
             'flash_connected' => ':provider успішно підключено.',
             'flash_already_linked' => 'Цей акаунт :provider уже прив’язано до іншого користувача.',
+            'flash_email_mismatch' => 'Адреса облікового запису :provider має збігатися з вашою адресою в TryPost.',
             'flash_cannot_disconnect' => 'Ви не можете від’єднати свій єдиний спосіб входу. Спочатку встановіть пароль або підключіть іншого провайдера.',
         ],
     ],

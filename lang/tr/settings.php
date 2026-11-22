@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider bağlantısı başarıyla kesildi.',
             'flash_connected' => ':provider başarıyla bağlandı.',
             'flash_already_linked' => 'Bu :provider hesabı zaten başka bir kullanıcıya bağlı.',
+            'flash_email_mismatch' => ':provider hesabınızın e-postası TryPost e-postanızla aynı olmalıdır.',
             'flash_cannot_disconnect' => 'Tek giriş yönteminizin bağlantısını kesemezsiniz. Önce bir parola belirleyin veya başka bir sağlayıcı bağlayın.',
         ],
     ],

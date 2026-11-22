@@ -507,6 +507,8 @@ return [
 
     'github_auth_enabled' => env('GITHUB_AUTH_ENABLED', false),
 
+    'zoho_auth_enabled' => env('ZOHO_AUTH_ENABLED', false),
+
     /*
     |--------------------------------------------------------------------------
     | Social Platforms

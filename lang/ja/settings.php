@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider の接続を解除しました。',
             'flash_connected' => ':provider を接続しました。',
             'flash_already_linked' => 'その :provider アカウントはすでに別のユーザーに連携されています。',
+            'flash_email_mismatch' => ':providerアカウントのメールアドレスはTryPostのメールアドレスと一致している必要があります。',
             'flash_cannot_disconnect' => '唯一のサインイン方法は接続解除できません。先にパスワードを設定するか、別のプロバイダーを接続してください。',
         ],
     ],

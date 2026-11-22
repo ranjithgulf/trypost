@@ -140,6 +140,7 @@ return [
             'flash_disconnected' => ':provider zostało pomyślnie rozłączone.',
             'flash_connected' => ':provider zostało pomyślnie połączone.',
             'flash_already_linked' => 'To konto :provider jest już powiązane z innym użytkownikiem.',
+            'flash_email_mismatch' => 'Adres e-mail konta :provider musi być taki sam jak adres e-mail w TryPost.',
             'flash_cannot_disconnect' => 'Nie możesz rozłączyć swojej jedynej metody logowania. Najpierw ustaw hasło lub połącz innego dostawcę.',
         ],
     ],
